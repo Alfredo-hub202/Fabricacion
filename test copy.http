@@ -1,0 +1,19 @@
+POST http://127.0.0.1:8000/api/calendar HTTP/1.1 
+content-type: application/json
+
+{
+  	"equipo": "Equipo Prueba",
+        "fecha_compromiso_fab": 2021-09-06,
+        "articulo_codigo":"UPFFF",
+        "fecha_fab_2t": 2021-09-07,
+        "articulo_nombre": "articulo_nombre",
+        "unidades_fabricar":6,
+        "pais":"España",
+        "gama":"NATURTINT ROOT RETOUCH",
+        "articulo_marca": "NATURTINT",
+        "tipo_necesidad":"En Partes Planificados",
+        "horas_necesarias": 9,
+        "seccion": "SECCION DOSIFICADO",
+}
+
+###

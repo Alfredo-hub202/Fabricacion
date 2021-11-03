@@ -1,0 +1,8 @@
+GET  https://elifexir.com/wp-json/wc/v3/orders?consumer_key=ck_678a80fbd3153ba620122bfdd169acd5bb499b7d&consumer_secret=cs_a0b57074efdeeb079122d14f8c9af38892d9277f&page=1&per_page=50
+content-type: application/json
+
+{
+  
+}
+
+###
