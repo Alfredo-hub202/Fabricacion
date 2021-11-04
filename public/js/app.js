@@ -75678,7 +75678,7 @@ var render = function () {
                           "button",
                           {
                             staticClass: "btn btn-sm btn-danger btn-secondary",
-                            attrs: { "data-dismiss": "modal" },
+                            attrs: { "data-dismiss": "modal", disabled: "" },
                             on: { click: _vm.deleteEvent },
                           },
                           [_vm._v("Eliminar")]
