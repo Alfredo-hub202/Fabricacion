@@ -15630,7 +15630,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         left: 'prev, next today',
         center: 'title',
         defaultView: 'dayGridMonth',
-        right: 'dayGridMonth,dayGridWeek,dayGridDay,list,timeGridDay',
+        right: 'dayGridMonth,dayGridWeek,dayGridDay,timeGridDay',
+        //Sacar listado -- list
         selectable: true,
         buttonIcons: false,
         // show the prev/next text
@@ -15650,7 +15651,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         month: 'mes',
         week: 'semana',
         day: 'día',
-        list: 'listado',
         allDaySlot: false
       },
       newEvent: {
@@ -15921,7 +15921,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     renderEvent: function renderEvent(info) {
       console.log(info.event);
-      info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación " + info.event.extendedProps.unidades_fabricar + " <br> Equipo " + info.event.extendedProps.equipos.equipo + "</i>"; //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
+      info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', {
+        maximumSignificantDigits: 4
+      }).format(info.event.extendedProps.unidades_fabricar) + "</i>"; //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
     },
     NumberFormat: function NumberFormat(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -16012,11 +16014,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
         return [year, month, day].join('-');
-      }
+      } // var unidades_fabrica = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(unidades_fabricar)
+
 
       this.newEvent = {
-        // nom_equipo: nom_equipo,
-        // equipo: equipo,
+        nom_equipo: nom_equipo,
+        equipo: equipo,
         fecha_compromiso_fab: formatDate(start),
         articulo_codigo: codigo_articulo,
         fecha_fab_2t: formatDate(end),
@@ -16029,8 +16032,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tipo_necesidad: tipo_necesidad,
         horas_necesarias: horas_necesarias,
         seccion: seccion,
-        agrupacion_id: agrupacion_id // recurso_id:recurso_id,
-
+        agrupacion_id: agrupacion_id,
+        recurso_id: recurso_id
       }; //   this.newEventDrop = {
       //   fecha_compromiso_fab: newEventDrop(start),
       //   fecha_fab_2t: newEventDrop(end),
@@ -88296,8 +88299,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\fullcalendar-with-laravel-and-vue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\fullcalendar-with-laravel-and-vue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\fullcalendar-with-laravel-and-vue-\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\fullcalendar-with-laravel-and-vue-\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
