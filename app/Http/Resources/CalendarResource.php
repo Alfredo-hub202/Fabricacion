@@ -14,6 +14,7 @@ class CalendarResource extends JsonResource
   */
  public function toArray($request)
  {
+  // dd($request);
 
   return [
    'id' => $this->id,
@@ -22,7 +23,7 @@ class CalendarResource extends JsonResource
    'equipo' => $this->equipo,
    'title' => $this->articulo_nombre,
    'start' => $this->fecha_compromiso_fab,
-//    'start' => $this->fecha_fab,
+   //    'start' => $this->fecha_fab,
    'end' => $this->fecha_fab_2t,
    'codigo_articulo' => $this->articulo_codigo,
    'recurso_id' => $this->recurso_id,

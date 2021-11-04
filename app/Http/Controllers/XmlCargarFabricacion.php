@@ -126,7 +126,7 @@ class XmlCargarFabricacion extends Controller
     "#9ACD32" => 'UAR 001',
     "#1E90FF" => 'UCT 002',
     "#1893FF" => 'UCT 001',
-    "#F5F5DC" => 'UDO 017',
+    "#76c96d" => 'UDO 017',
     "#40E0D0" => 'UES 002',
 
    ];

@@ -478,7 +478,7 @@ agrupaciones:{},
                     left: 'prev, next today',
                     center: 'title',
                     defaultView: 'dayGridMonth',
-                    right: 'dayGridMonth,dayGridWeek,dayGridDay,list,timeGridDay',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay,timeGridDay',  //Sacar listado -- list
                     selectable: true,
                     buttonIcons: false, // show the prev/next text
                     weekNumbers: true,
@@ -499,7 +499,7 @@ agrupaciones:{},
             month: 'mes',
             week: 'semana',
             day: 'día',
-            list:'listado',
+            
         allDaySlot: false
 
 
@@ -785,7 +785,7 @@ agrupaciones:{},
  
 renderEvent: function (info) {
   console.log(info.event)
-     info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación " + info.event.extendedProps.unidades_fabricar + " <br> Equipo " + info.event.extendedProps.equipos.equipo + "</i>";
+     info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 4 }).format(info.event.extendedProps.unidades_fabricar)  + "</i>";
     //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
       },
 
@@ -895,9 +895,10 @@ NumberFormat(x){
 
     return [year, month, day].join('-');
 }
+  // var unidades_fabrica = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(unidades_fabricar)
       this.newEvent = {
-        // nom_equipo: nom_equipo,
-        // equipo: equipo,
+        nom_equipo: nom_equipo,
+        equipo: equipo,
         fecha_compromiso_fab: formatDate(start),
         articulo_codigo:codigo_articulo,
         fecha_fab_2t:formatDate(end),
@@ -911,7 +912,7 @@ NumberFormat(x){
         horas_necesarias:horas_necesarias,
         seccion:seccion,
         agrupacion_id:agrupacion_id,
-        // recurso_id:recurso_id,
+        recurso_id:recurso_id,
       };
 
       //   this.newEventDrop = {
