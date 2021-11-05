@@ -362,7 +362,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="fecha_compromiso_fab">Fecha Compromiso Fab</label>
+                <label for="fecha_compromiso_fab">Fecha Compromiso Inicio</label>
                 <input
                   type="date"
                   id="fecha_compromiso_fab"
@@ -374,7 +374,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="fecha_fab_2t	">fecha_fab_2t</label>
+                <label for="fecha_fab_2t	">Fecha Compromiso Final</label>
                 <input type="date" id="fecha_fab_2t	" class="form-control" v-model="newEvent.fecha_fab_2t" required>
               </div>
             </div>

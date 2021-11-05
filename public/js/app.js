@@ -75557,7 +75557,7 @@ var render = function () {
                           _c(
                             "label",
                             { attrs: { for: "fecha_compromiso_fab" } },
-                            [_vm._v("Fecha Compromiso Fab")]
+                            [_vm._v("Fecha Compromiso Inicio")]
                           ),
                           _vm._v(" "),
                           _c("input", {
@@ -75597,7 +75597,7 @@ var render = function () {
                       _c("div", { staticClass: "col-md-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", { attrs: { for: "fecha_fab_2t\t" } }, [
-                            _vm._v("fecha_fab_2t"),
+                            _vm._v("Fecha Compromiso Final"),
                           ]),
                           _vm._v(" "),
                           _c("input", {

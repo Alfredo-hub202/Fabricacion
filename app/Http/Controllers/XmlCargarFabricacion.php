@@ -17,6 +17,25 @@ class XmlCargarFabricacion extends Controller
 
   $fecha = Carbon::now();
 
+//   $from = 'file://phgnas/dinamicos/XML/EquiposNecesidades/';
+  //   $from = dirname(__FILE__) . '/phgnas/dinamicos/XML/EquiposNecesidades//';
+  //   dd($from);
+  //   // $from = 'C:\Users\ARPEREZ.PHERGAL\Pictures\practica final';
+
+//   $to = (public_path());
+
+// //Abro el directorio que voy a leer
+  //   $dir = opendir($from);
+
+// //Recorro el directorio para leer los archivos que tiene
+  //   while (($file = readdir($dir)) !== false) {
+  //    //Leo todos los archivos excepto . y ..
+  //    if (strpos($file, '.') !== 0) {
+  //     //Copio el archivo manteniendo el mismo nombre en la nueva carpeta
+  //     copy($from . '/' . $file, $to . '/' . $file);
+  //    }
+  //   }
+
   // RUTA DEL ARCHIVO XML
   $archivo = simplexml_load_file(public_path('PartesFabrica.xml'));
 
@@ -34,7 +53,7 @@ class XmlCargarFabricacion extends Controller
   });
 
   $sql_delete = Schema::drop('equipos');
-//   $sql_delete = Schema::drop('recursos');
+  //   $sql_delete = Schema::drop('recursos');
   $sql_delete = Schema::drop('agrupaciones');
   $sql_delete = Schema::drop('secciones');
 
@@ -126,7 +145,7 @@ class XmlCargarFabricacion extends Controller
     "#9ACD32" => 'UAR 001',
     "#1E90FF" => 'UCT 002',
     "#1893FF" => 'UCT 001',
-    "#76c96d" => 'UDO 017',
+    "#c6606a" => 'UDO 017',
     "#40E0D0" => 'UES 002',
 
    ];

@@ -221,7 +221,7 @@ class XmlCargarFabri extends Controller
     "#FF69B4" => 'UDO 008',
     "#FFA500" => 'UES 004',
     "#008080" => 'UDO 006',
-    "#F5DEB3" => 'UDO 018',
+    "#f34a22" => 'UDO 018',
     "#00FFFF" => 'UFC 008',
     "#DC143C" => 'UES 001',
     "#6495ED" => 'UDO 010',
@@ -229,12 +229,45 @@ class XmlCargarFabri extends Controller
     "#9ACD32" => 'UAR 001',
     "#1E90FF" => 'UCT 002',
     "#1893FF" => 'UCT 001',
-    "#F5F5DC" => 'UDO 017',
+    "#c6606a" => 'UDO 017',
     "#40E0D0" => 'UES 002',
 
    ];
 
    $color = array_search($color_string, $array); // $clave = 2;
+
+   //  dd(round($fabricacion->note->horas_necesarias, 0, PHP_ROUND_HALF_EVEN));
+
+   $horas_necesarias = round($fabricacion->note->horas_necesarias, 0, PHP_ROUND_HALF_EVEN) + 5;
+
+   echo ($horas_necesarias);
+   echo ($fabricacion->note->fecha_fab_2t);
+   if ($horas_necesarias <= 8) {
+    $fabricacion->note->fecha_fab_2t;
+
+   } elseif ($horas_necesarias >= 8 and $horas_necesarias < 16) {
+    echo "Sumale 1 dia";
+    //sumo 1 día
+    $fecha_fab_2t = date("d-m-Y", strtotime($fabricacion->note->fecha_fab_2t . "+ 1 days"));
+
+   } elseif ($horas_necesarias >= 16 and $horas_necesarias < 24) {
+    echo "Sumale 2 dia";
+    $fecha_fab_2t = date("d-m-Y", strtotime($fabricacion->note->fecha_fab_2t . "+ 2 days"));
+
+   } elseif ($horas_necesarias >= 24 and $horas_necesarias < 32) {
+    echo "Sumale 3 dia";
+    $fecha_fab_2t = date("d-m-Y", strtotime($fabricacion->note->fecha_fab_2t . "+ 3 days"));
+
+   } elseif ($horas_necesarias >= 32 and $horas_necesarias < 40) {
+    echo "Sumale 4 dia";
+
+    $fecha_fab_2t = date("d-m-Y", strtotime($fabricacion->note->fecha_fab_2t . "+ 4 days"));
+
+   } else {
+    echo "a is smaller than b";
+   }
+
+   //  dd($fecha_compromiso_fab_2t);
 
    $sql_consulta_agrupacion = DB::table('agrupaciones')->select('id')->where("nombre", "=", $fabricacion->note->agrupacion)->get();
 
@@ -248,12 +281,10 @@ class XmlCargarFabri extends Controller
 
    }
 
+   $sql_consulta_secciones = DB::table('secciones')->select('id')->where("seccion", "=", $fabricacion->note->seccion)->get();
+   foreach ($sql_consulta_secciones as $seccion) {
 
-    $sql_consulta_secciones = DB::table('secciones')->select('id')->where("seccion", "=", $fabricacion->note->seccion)->get();
-    foreach ($sql_consulta_secciones as $seccion) {
-
-    }
-
+   }
 
    DB::table('calendars')->insert([
     'agrupacion_id' => $agrupacion->id,
@@ -263,14 +294,14 @@ class XmlCargarFabri extends Controller
     'unidades_media_equipo' => $fabricacion->note->unidades_media_equipo,
     'unidades_fabricar' => $fabricacion->note->unidades_fabricar,
     'unidades_brutas' => $fabricacion->note->unidades_brutas,
-    'horas_necesarias' => $fabricacion->note->horas_necesarias,
+    'horas_necesarias' => $horas_necesarias,
     'fecha_compromiso_cli' => date('Y-m-d', strtotime($fabricacion->note->fecha_compromiso_cli)),
     'fecha_compromiso_fab' => date('Y-m-d', strtotime($fabricacion->note->fecha_compromiso_fab)),
     'fecha_compromiso_fab_1t' => date('Y-m-d', strtotime($fabricacion->note->fecha_compromiso_fab_1t)),
     'fecha_compromiso_fab_2t' => date('Y-m-d', strtotime($fabricacion->note->fecha_compromiso_fab_2t)),
     'fecha_fab' => date('Y-m-d', strtotime($fabricacion->note->fecha_fab)),
     'fecha_fab_1t' => date('Y-m-d', strtotime($fabricacion->note->fecha_fab_1t)),
-    'fecha_fab_2t' => date('Y-m-d', strtotime($fabricacion->note->fecha_fab_2t)),
+    'fecha_fab_2t' => date('Y-m-d', strtotime($fecha_fab_2t)),
     'dias' => $fabricacion->note->dias,
     'dias1t' => $fabricacion->note->dias1t,
     'dias2t' => $fabricacion->note->dias2t,
