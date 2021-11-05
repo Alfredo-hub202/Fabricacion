@@ -391,7 +391,7 @@
             <template v-else>
               <div class="col-md-6 mb-4">
                 <button class="btn btn-sm btn-success btn-secondary" @click="updateEvent" data-dismiss="modal">Modificar</button>
-                <button class="btn btn-sm btn-danger btn-secondary" @click="deleteEvent" data-dismiss="modal">Eliminar</button>
+                <button class="btn btn-sm btn-danger btn-secondary" @click="deleteEvent" data-dismiss="modal" disabled>Eliminar</button>
                 <button class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
               </div>
             </template>
