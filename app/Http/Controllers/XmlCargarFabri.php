@@ -238,7 +238,7 @@ class XmlCargarFabri extends Controller
 
    //  dd(round($fabricacion->note->horas_necesarias, 0, PHP_ROUND_HALF_EVEN));
 
-   $horas_necesarias = round($fabricacion->note->horas_necesarias, 0, PHP_ROUND_HALF_EVEN) + 5;
+   $horas_necesarias = round($fabricacion->note->horas_necesarias, 0, PHP_ROUND_HALF_EVEN);
 
    echo ($horas_necesarias);
    echo ($fabricacion->note->fecha_fab_2t);
@@ -264,7 +264,7 @@ class XmlCargarFabri extends Controller
     $fecha_fab_2t = date("d-m-Y", strtotime($fabricacion->note->fecha_fab_2t . "+ 4 days"));
 
    } else {
-    echo "a is smaller than b";
+    echo "no se a podido Calcular las horas";
    }
 
    //  dd($fecha_compromiso_fab_2t);
@@ -328,7 +328,8 @@ class XmlCargarFabri extends Controller
    ]);
 
   }
-  return Redirect::to('')->withSuccess('La carga de los datos ha sido actualizada con exito');
+  // return Redirect::to('')->with('success','La carga de los datos ha sido actualizada con exito');
+  return redirect('')->with('flash', 'La carga de los datos ha sido actualizada con exito');
 
  }
 }

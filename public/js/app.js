@@ -15593,11 +15593,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -15672,7 +15667,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         fecha_fab_2t: ""
       },
       updateEvents: {
-        equipo: "",
         fecha_compromiso_fab: "",
         fecha_fab_2t: "",
         articulo_codigo: "",
@@ -15682,9 +15676,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         gama: "",
         articulo_marca: "",
         tipo_necesidad: "",
-        horas_necesarias: "",
-        _id: "",
-        recurso_id: ""
+        horas_necesarias: ""
       },
       selectedEquipo: '',
       selectedSession: '',
@@ -15920,25 +15912,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     renderEvent: function renderEvent(info) {
-      console.log(info.event);
+      // console.log(info.event)
+      // console.log(info.event.start)
+      console.log(info.event.start.toString());
       info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', {
         maximumSignificantDigits: 4
-      }).format(info.event.extendedProps.unidades_fabricar) + "</i>"; //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
+      }).format(info.event.extendedProps.unidades_fabricar) + "<br> Fecha Inicio: " + info.event.start + "</i>"; //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
     },
     NumberFormat: function NumberFormat(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    // Calcularhoras(){
-    //   console.log("prueba");
-    //   var fecha1 = moment('2016-07-12');
-    //   var fecha2 = moment('2016-07-13');
-    // var dur = moment.duration(8, 'hours');
-    // var hours = Math.floor(dur.asHours());
-    // console.log(hours, 'horas de dia ')
-    // moment('2016-03-12 13:00:00').add(24, 'hours').format('LLL')
-    //  var h= fecha2.diff(fecha1, 'years') 
-    // console.log(h, ' horas de diferencia');
-    // },
     addNewEvent: function addNewEvent() {
       var _this4 = this;
 
@@ -15987,8 +15970,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return event.id === +arg.event.id;
       }),
           id = _this$events$find.id,
-          equipo = _this$events$find.equipo,
-          nom_equipo = _this$events$find.nom_equipo,
           start = _this$events$find.start,
           end = _this$events$find.end,
           codigo_articulo = _this$events$find.codigo_articulo,
@@ -16000,29 +15981,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           horas_necesarias = _this$events$find.horas_necesarias,
           tipo_necesidad = _this$events$find.tipo_necesidad,
           seccion = _this$events$find.seccion,
-          recurso_id = _this$events$find.recurso_id,
-          pedido = _this$events$find.pedido,
-          agrupacion_id = _this$events$find.agrupacion_id;
+          pedido = _this$events$find.pedido;
 
-      this.indexToUpdate = id;
-
-      function formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        return [year, month, day].join('-');
-      } // var unidades_fabrica = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(unidades_fabricar)
-
+      this.indexToUpdate = id; //                 function formatDate(date) {
+      //     var d = new Date(date),
+      //         month = '' + (d.getMonth() + 1),
+      //         day = '' + d.getDate(),
+      //         year = d.getFullYear();
+      //     if (month.length < 2) 
+      //         month = '0' + month;
+      //     if (day.length < 2) 
+      //         day = '0' + day;
+      //     return [year, month, day].join('-');
+      // }
+      // var unidades_fabrica = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(unidades_fabricar)
 
       this.newEvent = {
-        nom_equipo: nom_equipo,
-        equipo: equipo,
-        fecha_compromiso_fab: formatDate(start),
+        fecha_compromiso_fab: start,
         articulo_codigo: codigo_articulo,
-        fecha_fab_2t: formatDate(end),
+        fecha_fab_2t: end,
         articulo_nombre: articulo_nombre,
         unidades_fabricar: unidades_fabricar,
         pais: pais,
@@ -16031,9 +16008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         articulo_marca: articulo_marca,
         tipo_necesidad: tipo_necesidad,
         horas_necesarias: horas_necesarias,
-        seccion: seccion,
-        agrupacion_id: agrupacion_id,
-        recurso_id: recurso_id
+        seccion: seccion
       }; //   this.newEventDrop = {
       //   fecha_compromiso_fab: newEventDrop(start),
       //   fecha_fab_2t: newEventDrop(end),
@@ -16046,6 +16021,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     updateEvent: function updateEvent() {
       var _this5 = this;
 
+      this.condicionfechas();
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/calendar/" + this.indexToUpdate, _objectSpread({}, this.newEvent)) // console.log(this.newEvent)
       .then(function (resp) {
         _this5.resetForm();
@@ -16057,6 +16033,62 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (err) {
         return console.log("Unable to update event!", err.response.data);
       });
+    },
+    condicionfechas: function condicionfechas() {
+      if (this.newEvent.horas_necesarias <= 8) {
+        this.newEvent.fecha_fab_2t = this.newEvent.fecha_compromiso_fab;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 8 && this.newEvent.horas_necesarias < 16) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 1;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 16 && this.newEvent.horas_necesarias <= 24) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 2;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 24 && this.newEvent.horas_necesarias <= 32) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 3;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 32 && this.newEvent.horas_necesarias <= 40) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 4;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 40 && this.newEvent.horas_necesarias <= 48) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 5;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 48 && this.newEvent.horas_necesarias <= 56) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 6;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 56 && this.newEvent.horas_necesarias <= 64) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 7;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 64 && this.newEvent.horas_necesarias <= 72) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 8;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 72 && this.newEvent.horas_necesarias <= 80) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 9;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      } else if (this.newEvent.horas_necesarias >= 80 && this.newEvent.horas_necesarias <= 88) {
+        var date = new Date(this.newEvent.fecha_compromiso_fab);
+        var sumardia = date.getDate() + 10;
+        this.newEvent.fecha_fab_2t = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + sumardia;
+        return 0;
+      }
     },
     updateEventDrop: function updateEventDrop(arg) {
       var _this6 = this;
@@ -16073,12 +16105,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (err) {
         return console.log("Unable to update event!", err.response.data);
       });
-    },
-    convert: function convert(str) {
-      var date = new Date(str),
-          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-          day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("-");
     },
     deleteEvent: function deleteEvent() {
       var _this7 = this;
@@ -75176,44 +75202,6 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "equipo" } }, [
-                        _vm._v("Equipo"),
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newEvent.equipo,
-                            expression: "newEvent.equipo",
-                          },
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          id: "equipo",
-                          "data-toggle": "tooltip",
-                          title: "Ingresa nombre del Equipo",
-                          disabled: "",
-                        },
-                        domProps: { value: _vm.newEvent.equipo },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.newEvent,
-                              "equipo",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
                       _c("label", { attrs: { for: "articulo_codigo" } }, [
                         _vm._v(" Codigo Articulo"),
                       ]),
@@ -75414,11 +75402,7 @@ var render = function () {
                               },
                             ],
                             staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              id: "horas_necesarias",
-                              disabled: "",
-                            },
+                            attrs: { type: "text", id: "horas_necesarias" },
                             domProps: { value: _vm.newEvent.horas_necesarias },
                             on: {
                               input: function ($event) {
@@ -75573,7 +75557,7 @@ var render = function () {
                             attrs: {
                               type: "date",
                               id: "fecha_compromiso_fab",
-                              required: "",
+                              disabled: "",
                             },
                             domProps: {
                               value: _vm.newEvent.fecha_compromiso_fab,
@@ -75613,7 +75597,7 @@ var render = function () {
                             attrs: {
                               type: "date",
                               id: "fecha_fab_2t\t",
-                              required: "",
+                              disabled: "",
                             },
                             domProps: { value: _vm.newEvent.fecha_fab_2t },
                             on: {
@@ -75678,7 +75662,7 @@ var render = function () {
                           "button",
                           {
                             staticClass: "btn btn-sm btn-danger btn-secondary",
-                            attrs: { "data-dismiss": "modal" },
+                            attrs: { "data-dismiss": "modal", disabled: "" },
                             on: { click: _vm.deleteEvent },
                           },
                           [_vm._v("Eliminar")]
@@ -75718,12 +75702,12 @@ var render = function () {
               buttonText: _vm.buttonText,
               plugins: _vm.calendarPlugins,
               events: _vm.computed_events,
+              eventRender: _vm.renderEvent,
             },
             on: {
               eventClick: _vm.showEvent,
-              eventResize: _vm.updateEventDrop,
-              eventDrop: _vm.updateEventDrop,
-              eventRender: _vm.renderEvent,
+              eventResize: _vm.updateEvent,
+              eventDrop: _vm.updateEvent,
             },
           }),
         ],

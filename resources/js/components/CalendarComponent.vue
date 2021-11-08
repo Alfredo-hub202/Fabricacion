@@ -242,7 +242,6 @@
 
           </div>
 
-
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -295,10 +294,10 @@
             <label for="equipo">Pedido</label>
             <input type="text" id="equipo" class="form-control" v-model="newEvent.pedido" data-toggle="tooltip" title="Ingresa nombre del Equipo" disabled>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="equipo">Equipo</label>
-            <input type="text" id="equipo" class="form-control" v-model="newEvent.equipo" data-toggle="tooltip" title="Ingresa nombre del Equipo" disabled>
-          </div>
+            <input type="text" id="equipo" class="form-control" v-model="newEvent.equipos" data-toggle="tooltip" title="Ingresa nombre del Equipo" disabled>
+          </div> -->
 
              <div class="form-group">
             <label for="articulo_codigo"> Codigo Articulo</label>
@@ -334,7 +333,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="horas_necesarias">Horas Necesarias</label>
-                  <input type="text" id="horas_necesarias" class="form-control" v-model="newEvent.horas_necesarias" disabled>
+                  <input type="text" id="horas_necesarias" class="form-control" v-model="newEvent.horas_necesarias">
               </div>
             </div>
             <div class="col-md-4">
@@ -368,14 +367,14 @@
                   id="fecha_compromiso_fab"
                   class="form-control"
                   v-model="newEvent.fecha_compromiso_fab"
-                  required
+                  disabled
                 >
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="fecha_fab_2t	">Fecha Compromiso Final</label>
-                <input type="date" id="fecha_fab_2t	" class="form-control" v-model="newEvent.fecha_fab_2t" required>
+                <input type="date" id="fecha_fab_2t	" class="form-control" v-model="newEvent.fecha_fab_2t" disabled>
               </div>
             </div>
 
@@ -391,7 +390,7 @@
             <template v-else>
               <div class="col-md-6 mb-4">
                 <button class="btn btn-sm btn-success btn-secondary" @click="updateEvent" data-dismiss="modal">Modificar</button>
-                <button class="btn btn-sm btn-danger btn-secondary" @click="deleteEvent" data-dismiss="modal">Eliminar</button>
+                <button class="btn btn-sm btn-danger btn-secondary" @click="deleteEvent" data-dismiss="modal" disabled>Eliminar</button>
                 <button class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
               </div>
             </template>
@@ -414,13 +413,9 @@
             :buttonText="buttonText"
             :plugins="calendarPlugins"
             :events="computed_events"
-            @eventResize="updateEventDrop"
-            @eventDrop="updateEventDrop"
-            @eventRender="renderEvent"
-            
-        
-          
-
+            @eventResize="updateEvent"
+            @eventDrop="updateEvent"
+            :eventRender="renderEvent"
           
          />
   <!-- @eventRender="eventDidMount"    -->
@@ -533,7 +528,7 @@ agrupaciones:{},
 
 
         updateEvents: {
-        equipo: "",
+
         fecha_compromiso_fab: "",
         fecha_fab_2t: "",
         articulo_codigo: "",
@@ -544,8 +539,7 @@ agrupaciones:{},
         articulo_marca:"",
         tipo_necesidad:"",
         horas_necesarias:"",
-        _id:"",
-        recurso_id:"",
+
       },
 
     selectedEquipo: '',
@@ -644,8 +638,7 @@ agrupaciones:{},
             });
         },
       indexToUpdate() {
-      return this.indexToUpdate;
-      
+      return this.indexToUpdate; 
     }
   },
 
@@ -784,8 +777,11 @@ agrupaciones:{},
 
  
 renderEvent: function (info) {
-  console.log(info.event)
-     info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 4 }).format(info.event.extendedProps.unidades_fabricar)  + "</i>";
+  // console.log(info.event)
+  // console.log(info.event.start)
+      console.log(info.event.start.toString());
+
+     info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 4 }).format(info.event.extendedProps.unidades_fabricar)  + "<br> Fecha Inicio: " + info.event.start +  "</i>";
     //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
       },
 
@@ -794,20 +790,6 @@ NumberFormat(x){
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 },
-
-// Calcularhoras(){
-//   console.log("prueba");
-//   var fecha1 = moment('2016-07-12');
-//   var fecha2 = moment('2016-07-13');
-// var dur = moment.duration(8, 'hours');
-// var hours = Math.floor(dur.asHours());
-// console.log(hours, 'horas de dia ')
-// moment('2016-03-12 13:00:00').add(24, 'hours').format('LLL')
-
-//  var h= fecha2.diff(fecha1, 'years') 
-// console.log(h, ' horas de diferencia');
-
-// },
 
 
     addNewEvent() {
@@ -863,8 +845,7 @@ NumberFormat(x){
       this.addingMode = false;
       const { 
         id, 
-      equipo,
-      nom_equipo, 
+
       start, 
       end , 
       codigo_articulo, 
@@ -876,32 +857,32 @@ NumberFormat(x){
       horas_necesarias,
       tipo_necesidad,
       seccion,
-      recurso_id,
+
       pedido,
-      agrupacion_id} = this.events.find(
+
+   } = this.events.find(
         event => event.id === +arg.event.id
       );
       this.indexToUpdate = id;
-                function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+//                 function formatDate(date) {
+//     var d = new Date(date),
+//         month = '' + (d.getMonth() + 1),
+//         day = '' + d.getDate(),
+//         year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
+//     if (month.length < 2) 
+//         month = '0' + month;
+//     if (day.length < 2) 
+//         day = '0' + day;
 
-    return [year, month, day].join('-');
-}
+//     return [year, month, day].join('-');
+// }
   // var unidades_fabrica = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(unidades_fabricar)
       this.newEvent = {
-        nom_equipo: nom_equipo,
-        equipo: equipo,
-        fecha_compromiso_fab: formatDate(start),
+       
+        fecha_compromiso_fab: start,
         articulo_codigo:codigo_articulo,
-        fecha_fab_2t:formatDate(end),
+        fecha_fab_2t:end,
         articulo_nombre:articulo_nombre,
         unidades_fabricar:unidades_fabricar,
         pais:pais,
@@ -911,8 +892,8 @@ NumberFormat(x){
         tipo_necesidad:tipo_necesidad,
         horas_necesarias:horas_necesarias,
         seccion:seccion,
-        agrupacion_id:agrupacion_id,
-        recurso_id:recurso_id,
+
+      
       };
 
       //   this.newEventDrop = {
@@ -934,6 +915,7 @@ NumberFormat(x){
 
     
     updateEvent() {
+      this.condicionfechas();
       axios
         .put("/api/calendar/" + this.indexToUpdate, {
           ...this.newEvent
@@ -948,11 +930,91 @@ NumberFormat(x){
         
             return view('CalendarComponent');
 
-
         })
         .catch(err =>
           console.log("Unable to update event!", err.response.data)
         );
+    },
+
+    condicionfechas(){
+      if (this.newEvent.horas_necesarias <= 8) {
+        this.newEvent.fecha_fab_2t = this.newEvent.fecha_compromiso_fab;
+         return 0;
+      }else if (this.newEvent.horas_necesarias >= 8 && this.newEvent.horas_necesarias < 16){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 1;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 16 && this.newEvent.horas_necesarias <= 24){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 2;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 24 && this.newEvent.horas_necesarias <= 32){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 3;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 32 && this.newEvent.horas_necesarias <= 40){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 4;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 40 && this.newEvent.horas_necesarias <= 48){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 5;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 48 && this.newEvent.horas_necesarias <= 56){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 6;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+
+      }else if (this.newEvent.horas_necesarias >= 56 && this.newEvent.horas_necesarias <= 64){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 7;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 64 && this.newEvent.horas_necesarias <= 72){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 8;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 72 && this.newEvent.horas_necesarias <= 80){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 9;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }else if (this.newEvent.horas_necesarias >= 80 && this.newEvent.horas_necesarias <= 88){
+    var date = new Date(this.newEvent.fecha_compromiso_fab);
+    var sumardia= date.getDate() + 10;
+    this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+    return 0;
+
+      }
+
+
+ 
     },
 
     updateEventDrop(arg) {
@@ -975,13 +1037,6 @@ NumberFormat(x){
           console.log("Unable to update event!", err.response.data)
         );
     },
-      convert(str) {
-  var date = new Date(str),
-    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-    day = ("0" + date.getDate()).slice(-2);
-  return [date.getFullYear(), mnth, day].join("-");
-  
-},
 
     deleteEvent() {
       axios
@@ -1016,6 +1071,7 @@ NumberFormat(x){
       
       
     },
+    
     resetFormUpdate() {
       Object.keys(this.newEvent).forEach(key => {
         return (this.newEvent[key] = "");
@@ -1031,6 +1087,8 @@ NumberFormat(x){
 
     
         },
+
+    
         
     
   },

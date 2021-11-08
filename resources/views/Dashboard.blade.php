@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel and Vue - Fullcalendar</title>
+        <title>Calendar Fabricacion</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -38,7 +38,7 @@
 </head>
 
 <body id="page-top">
-
+    {{ session()->get('flash') }}
     <!-- Page Wrapper -->
     <div id="wrapper">
 
