@@ -413,8 +413,8 @@
             :buttonText="buttonText"
             :plugins="calendarPlugins"
             :events="computed_events"
-            @eventResize="updateEvent"
-            @eventDrop="updateEvent"
+            @eventResize="updateEventDrop"
+            @eventDrop="updateEventDrop"
             :eventRender="renderEvent"
           
          />
@@ -520,9 +520,8 @@ agrupaciones:{},
 
 
        newEventDrop: {
-
         fecha_compromiso_fab:  "",
-        fecha_fab_2t:  "",
+        // fecha_fab_2t:  "",
  
       },
 
@@ -777,9 +776,11 @@ agrupaciones:{},
 
  
 renderEvent: function (info) {
-  // console.log(info.event)
-  // console.log(info.event.start)
-      console.log(info.event.start.toString());
+      var date = new Date(info.event.start);
+    var sumardia= date.getDate();
+    // this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+
+      // console.log(sumardia);
 
      info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 4 }).format(info.event.extendedProps.unidades_fabricar)  + "<br> Fecha Inicio: " + info.event.start +  "</i>";
     //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
@@ -896,11 +897,11 @@ NumberFormat(x){
       
       };
 
-      //   this.newEventDrop = {
-      //   fecha_compromiso_fab: newEventDrop(start),
-      //   fecha_fab_2t: newEventDrop(end),
+        this.newEventDrop = {
+        fecha_compromiso_fab: start,
+        fecha_fab_2t: end,
 
-      // };
+      };
 
       
       $('#staticBackdrop').modal('show');
@@ -914,7 +915,9 @@ NumberFormat(x){
 
 
     
-    updateEvent() {
+    updateEvent(info) {
+
+
       this.condicionfechas();
       axios
         .put("/api/calendar/" + this.indexToUpdate, {
@@ -932,6 +935,7 @@ NumberFormat(x){
 
         })
         .catch(err =>
+        
           console.log("Unable to update event!", err.response.data)
         );
     },
@@ -1017,15 +1021,41 @@ NumberFormat(x){
  
     },
 
-    updateEventDrop(arg) {
+    prepararDatos(info){
+            var dateStart = new Date(info.event.start);
+            // var dateEnd = new Date(info.event.end);
+  
+
+
+  this.newEventDrop.fecha_compromiso_fab = dateStart.getFullYear()  +  '/' + (dateStart.getMonth() + 1) + '/' + dateStart.getDate() ;
+    // this.newEventDrop.fecha_fab_2t = dateEnd.getFullYear()  +  '/' + (dateEnd.getMonth() + 1) + '/' + dateEnd.getDate() ;
+      alert(this.newEventDrop.fecha_compromiso_fab + " Deseas Modificar la Fecha Modificación ?  " );
+      // alert(this.newEventDrop.fecha_fab_2t + " Fecha Culminación " );
+
+        // fecha_compromiso_fab:  "",
+        // fecha_fab_2t:  "",
+
+ 
+//   this.condicionfechas();
+// console.log(this.newEventDrop.fecha_fab_2t);
+     if (!confirm( this.newEventDrop.fecha_fab_2t + "Fecha Culminación ")) {
+       console.log(info)
+      info.revert();
+    }
+    
+    },
+
+
+    updateEventDrop(info) {
+
+      // this.prepararDatos();
+      this.prepararDatos(info);
+      
       axios
         .put("/api/calendar/" + this.indexToUpdate, {
           ...this.newEventDrop
         })
-        
-      //      console.log(this.convert(arg.event.start))
-
-      // console.log(arg)
+ 
         .then(resp => {
           this.resetForm();
           this.getEvents();

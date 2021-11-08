@@ -15663,8 +15663,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         agrupacion_id: ""
       },
       newEventDrop: {
-        fecha_compromiso_fab: "",
-        fecha_fab_2t: ""
+        fecha_compromiso_fab: "" // fecha_fab_2t:  "",
+
       },
       updateEvents: {
         fecha_compromiso_fab: "",
@@ -15912,9 +15912,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     renderEvent: function renderEvent(info) {
-      // console.log(info.event)
-      // console.log(info.event.start)
-      console.log(info.event.start.toString());
+      var date = new Date(info.event.start);
+      var sumardia = date.getDate(); // this.newEvent.fecha_fab_2t = date.getFullYear()  +  '/' + (date.getMonth() + 1) + '/' +  sumardia ;
+      // console.log(sumardia);
+
       info.el.querySelector('.fc-title').innerHTML = "<i> " + info.event.title + " <br>  Unidades de Fabricación: " + new Intl.NumberFormat('en-IN', {
         maximumSignificantDigits: 4
       }).format(info.event.extendedProps.unidades_fabricar) + "<br> Fecha Inicio: " + info.event.start + "</i>"; //  info.el.querySelector('.fc-title').innerHTML = "<i>"  + info.event.extendedProps.unidades_fabricar+"</i>";
@@ -16009,16 +16010,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tipo_necesidad: tipo_necesidad,
         horas_necesarias: horas_necesarias,
         seccion: seccion
-      }; //   this.newEventDrop = {
-      //   fecha_compromiso_fab: newEventDrop(start),
-      //   fecha_fab_2t: newEventDrop(end),
-      // };
-
+      };
+      this.newEventDrop = {
+        fecha_compromiso_fab: start,
+        fecha_fab_2t: end
+      };
       $('#staticBackdrop').modal('show'); // console.log("abrir Modal",'#staticBackdrop');
 
       this.showModal = true;
     },
-    updateEvent: function updateEvent() {
+    updateEvent: function updateEvent(info) {
       var _this5 = this;
 
       this.condicionfechas();
@@ -16090,12 +16091,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return 0;
       }
     },
-    updateEventDrop: function updateEventDrop(arg) {
+    prepararDatos: function prepararDatos(info) {
+      var dateStart = new Date(info.event.start); // var dateEnd = new Date(info.event.end);
+
+      this.newEventDrop.fecha_compromiso_fab = dateStart.getFullYear() + '/' + (dateStart.getMonth() + 1) + '/' + dateStart.getDate(); // this.newEventDrop.fecha_fab_2t = dateEnd.getFullYear()  +  '/' + (dateEnd.getMonth() + 1) + '/' + dateEnd.getDate() ;
+
+      alert(this.newEventDrop.fecha_compromiso_fab + " Deseas Modificar la Fecha Modificación ?  "); // alert(this.newEventDrop.fecha_fab_2t + " Fecha Culminación " );
+      // fecha_compromiso_fab:  "",
+      // fecha_fab_2t:  "",
+      //   this.condicionfechas();
+      // console.log(this.newEventDrop.fecha_fab_2t);
+
+      if (!confirm(this.newEventDrop.fecha_fab_2t + "Fecha Culminación ")) {
+        console.log(info);
+        info.revert();
+      }
+    },
+    updateEventDrop: function updateEventDrop(info) {
       var _this6 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/calendar/" + this.indexToUpdate, _objectSpread({}, this.newEventDrop)) //      console.log(this.convert(arg.event.start))
-      // console.log(arg)
-      .then(function (resp) {
+      // this.prepararDatos();
+      this.prepararDatos(info);
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/calendar/" + this.indexToUpdate, _objectSpread({}, this.newEventDrop)).then(function (resp) {
         _this6.resetForm();
 
         _this6.getEvents();
@@ -75706,8 +75723,8 @@ var render = function () {
             },
             on: {
               eventClick: _vm.showEvent,
-              eventResize: _vm.updateEvent,
-              eventDrop: _vm.updateEvent,
+              eventResize: _vm.updateEventDrop,
+              eventDrop: _vm.updateEventDrop,
             },
           }),
         ],
